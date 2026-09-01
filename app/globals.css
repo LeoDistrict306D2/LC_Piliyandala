@@ -1,0 +1,220 @@
+@import 'tailwindcss';
+
+/*
+ * Leo Club of Piliyandala — "Civic Modern"
+ *
+ * The largest and longest-established club in this set, and the design says so:
+ * a structured bento grid, navy and gold handled as an institutional palette
+ * rather than a nostalgic one, and a great deal of confidence in plain
+ * rectangles.
+ *
+ * The bento is the whole layout system. Cells span different widths and heights
+ * on one grid, so the page has hierarchy without needing decoration to signal
+ * it.
+ *
+ * Token names are ROLES, not hues.
+ */
+
+@theme {
+  /* --- Surfaces ------------------------------------------------------- */
+  --color-page: #ffffff;
+  --color-panel: #f4f6f9;
+  --color-inverse: #14284b;
+  --color-on-inverse: #eef2f8;
+
+  /* --- Text ----------------------------------------------------------- */
+  --color-ink: #101a2e;
+  --color-ink-muted: #4a5670;
+  --color-ink-faint: #7b8599;
+
+  /* --- Accents --------------------------------------------------------- */
+  /* Navy is the institution; gold is the seal. Gold appears on navy or as a
+     rule — never as body text on white, where it fails contrast. */
+  --color-accent: #14284b;
+  --color-accent-strong: #0b1830;
+  --color-gold: #c79a2e;
+
+  /* --- Lines ----------------------------------------------------------- */
+  --color-rule: #dde3ec;
+  --color-rule-strong: #b6c0d0;
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-heading: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --text-civic: 4rem;
+  --text-civic--line-height: 1.02;
+  --text-civic--letter-spacing: -0.035em;
+
+  --ease-civic: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 32%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 82rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 2rem;
+    }
+  }
+
+  .measure {
+    max-width: 38rem;
+  }
+
+  .band {
+    padding-block: 4.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .band {
+      padding-block: 6.5rem;
+    }
+  }
+
+  /*
+   * The bento. A six-column grid with dense auto-placement, so cells of
+   * different spans backfill the gaps instead of leaving holes. Cells declare
+   * their own span with the `.bento-*` classes below.
+   */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row dense;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .bento {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+  }
+
+  .bento-2 {
+    grid-column: span 2;
+  }
+
+  @media (min-width: 768px) {
+    .bento-2 {
+      grid-column: span 2;
+    }
+
+    .bento-3 {
+      grid-column: span 3;
+    }
+
+    .bento-4 {
+      grid-column: span 4;
+    }
+
+    .bento-6 {
+      grid-column: span 6;
+    }
+
+    .bento-tall {
+      grid-row: span 2;
+    }
+  }
+
+  /* On small screens every cell is full width — a two-column bento on a phone
+     is just two cramped columns. */
+  @media (max-width: 767px) {
+    .bento-3,
+    .bento-4,
+    .bento-6 {
+      grid-column: span 2;
+    }
+  }
+
+  .cell {
+    border: 1px solid var(--color-rule);
+    background-color: var(--color-page);
+    padding: 1.75rem;
+    transition: border-color 200ms var(--ease-civic);
+  }
+
+  .cell:hover {
+    border-color: var(--color-rule-strong);
+  }
+
+  .cell-fill {
+    border: 1px solid transparent;
+    background-color: var(--color-inverse);
+    color: var(--color-on-inverse);
+  }
+
+  .cell-quiet {
+    background-color: var(--color-panel);
+  }
+
+  /* The gold seal rule used above section headings. */
+  .seal {
+    width: 2.5rem;
+    height: 3px;
+    background-color: var(--color-gold);
+  }
+
+  .reveal {
+    transition:
+      opacity 500ms var(--ease-civic),
+      transform 500ms var(--ease-civic);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal.is-hidden {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
